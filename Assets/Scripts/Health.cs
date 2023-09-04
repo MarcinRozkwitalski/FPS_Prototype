@@ -22,14 +22,6 @@ public class Health : MonoBehaviour
 
     public void SelfDestroy()
     {
-        StartCoroutine(DelayedDestroy());
-        
-    }
-
-    IEnumerator DelayedDestroy()
-    {
-        yield return new WaitForSeconds(1f);
-
         Destroy(gameObject);
     }
 }

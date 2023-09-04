@@ -13,8 +13,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4204832923952817824, guid: d86c25f872a98c343bbf144700e49f6d, type: 3}
       propertyPath: m_Name
-      value: BulletProjectile Variant
+      value: Bullet
       objectReference: {fileID: 0}
+    - target: {fileID: 6254571275088090498, guid: d86c25f872a98c343bbf144700e49f6d, type: 3}
+      propertyPath: m_BulletImpactSoundObjectPrefab
+      value: 
+      objectReference: {fileID: 2290838236442827766, guid: d87d42d1259a205448ba77bfff60eb8f, type: 3}
     - target: {fileID: 7601991078847162844, guid: d86c25f872a98c343bbf144700e49f6d, type: 3}
       propertyPath: m_RootOrder
       value: 0

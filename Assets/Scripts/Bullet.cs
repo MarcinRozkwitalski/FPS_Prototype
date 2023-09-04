@@ -7,7 +7,11 @@ public class Bullet : MonoBehaviour
 {
     private IObjectPool<Bullet> bulletPool;
 
-    private void Awake() {
+    [SerializeField]
+    private GameObject m_BulletImpactSoundObjectPrefab;
+
+    private void Awake()
+    {
         this.gameObject.SetActive(true);
     }
 
@@ -22,9 +26,9 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         GameObject hitObject = collision.gameObject;
+        Vector3 lastBulletPosition = gameObject.transform.position;
 
-        this.gameObject.SetActive(false);
-
+        bulletPool.Release(this);
 
         if (hitObject.CompareTag("Destroyable"))
         {
@@ -33,15 +37,23 @@ public class Bullet : MonoBehaviour
                 Material hitObjectMaterial = hitObject.GetComponent<Material>();
                 Health hitObjectHealth = hitObject.GetComponent<Health>();
 
-                if (mWeaponType == "Pistol" && hitObjectMaterial.materialType == Material.Type.Metal)
+                if (mWeaponType == "Pistol" && hitObjectMaterial.materialType == Material.Type.Metal || mWeaponType == "Pistol" && hitObjectMaterial.materialType == Material.Type.Glass)
+                {
+                    hitObjectHealth.ReceiveDamage(damage);
+                    if (hitObjectMaterial.materialType == Material.Type.Metal && m_BulletImpactSoundObjectPrefab != null)
+                    {
+                        Instantiate(m_BulletImpactSoundObjectPrefab, lastBulletPosition, Quaternion.identity);
+                    }
+                }
+                else if (mWeaponType == "Laser_Gun" && hitObjectMaterial.materialType == Material.Type.Metal || mWeaponType == "Laser_Gun" && hitObjectMaterial.materialType == Material.Type.Wood)
+                {
+                    hitObjectHealth.ReceiveDamage(damage);
+                }
+                else if (mWeaponType == "Sledge_Hammer" && hitObjectMaterial.materialType == Material.Type.Wood || mWeaponType == "Sledge_Hammer" && hitObjectMaterial.materialType == Material.Type.Glass)
                 {
                     hitObjectHealth.ReceiveDamage(damage);
                 }
             }
         }
-    }
-
-    private void OnBecameInvisible() {
-        bulletPool.Release(this);
     }
 }

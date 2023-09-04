@@ -27,9 +27,9 @@ public class ProjectileGun : MonoBehaviour
 
     public bool allowInvoke = true;
 
-    private AudioSource mAudioSrc;
-    private WeaponSoundManager mWeaponSoundManager;
-    private WeaponParticleManager mWeaponParticleManager;
+    private AudioSource m_AudioSrc;
+    private WeaponSoundManager m_WeaponSoundManager;
+    private WeaponParticleManager m_WeaponParticleManager;
 
 
     private void Awake()
@@ -38,21 +38,21 @@ public class ProjectileGun : MonoBehaviour
             CreateBullet,
             OnGet,
             OnRelease,
-            OnDestroy,
-            maxSize:17
+            OnInstanceDestroy,
+            maxSize:6
             );
 
         bulletsLeft = magazineSize;
         readyToShoot = true;
 
         if (gameObject.GetComponent<AudioSource>() != null)
-            mAudioSrc = gameObject.GetComponent<AudioSource>();
+            m_AudioSrc = gameObject.GetComponent<AudioSource>();
         
         if (gameObject.GetComponent<WeaponSoundManager>() != null)
-            mWeaponSoundManager = gameObject.GetComponent<WeaponSoundManager>();
+            m_WeaponSoundManager = gameObject.GetComponent<WeaponSoundManager>();
         
         if (gameObject.GetComponent<WeaponParticleManager>() != null)
-            mWeaponParticleManager = gameObject.GetComponent<WeaponParticleManager>();
+            m_WeaponParticleManager = gameObject.GetComponent<WeaponParticleManager>();
     }
 
     private void Update()
@@ -91,8 +91,8 @@ public class ProjectileGun : MonoBehaviour
 
     private void AddVelocityAndDirection(Bullet bullet)
     {
-        mWeaponSoundManager.PlayShotSound();
-        mWeaponParticleManager.PlayParticle();
+        m_WeaponSoundManager.PlayShotSound();
+        m_WeaponParticleManager.PlayParticle();
 
         Ray ray = FPSCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
@@ -138,7 +138,7 @@ public class ProjectileGun : MonoBehaviour
         bullet.gameObject.SetActive(false);
     }
 
-    private void OnDestroy(Bullet bullet)
+    private void OnInstanceDestroy(Bullet bullet)
     {
         Destroy(bullet.gameObject);
     }
@@ -152,7 +152,7 @@ public class ProjectileGun : MonoBehaviour
     private void Reload()
     {
         reloading = true;
-        mWeaponSoundManager.PlayReloadSound();
+        m_WeaponSoundManager.PlayReloadSound();
         Invoke("ReloadFinished", reloadTime);
     }
 

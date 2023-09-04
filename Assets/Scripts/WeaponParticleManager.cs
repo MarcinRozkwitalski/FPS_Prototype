@@ -6,7 +6,7 @@ public class WeaponParticleManager : MonoBehaviour
 {
     private ParticleSystem mParticleSystem;
 
-    void Start()
+    private void Start()
     {
         mParticleSystem = GetComponent<ParticleSystem>();
     }
