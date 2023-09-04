@@ -38,7 +38,8 @@ public class ProjectileGun : MonoBehaviour
             CreateBullet,
             OnGet,
             OnRelease,
-            maxSize:3
+            OnDestroy,
+            maxSize:17
             );
 
         bulletsLeft = magazineSize;
@@ -85,8 +86,6 @@ public class ProjectileGun : MonoBehaviour
 
         readyToShoot = false;
 
-        AddVelocityAndDirection(bullet);
-
         return bullet;
     }
 
@@ -104,20 +103,14 @@ public class ProjectileGun : MonoBehaviour
         else
             targetPoint = ray.GetPoint(75);
 
-        Vector3 directionWithoutSpread = targetPoint - attackPoint.position;
+        Vector3 direction = targetPoint - attackPoint.position;
 
-        float x = Random.Range(-spread, spread);
-        float y = Random.Range(-spread, spread);
-
-        Vector3 directionWtihSpread = directionWithoutSpread + new Vector3(x, y, 0);
-
-        // bullet = Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
         bullet.mWeaponType = gameObject.name;
         bullet.damage = bulletDamage;
-        bullet.transform.forward = directionWithoutSpread.normalized + new Vector3(90, 0, 0);
+        bullet.transform.forward = direction.normalized + new Vector3(90, 0, 0);
         
 
-        bullet.GetComponent<Rigidbody>().AddForce(directionWtihSpread.normalized * shootForce, ForceMode.Impulse);
+        bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
 
         if (muzzleFlash != null)
             Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
@@ -143,6 +136,11 @@ public class ProjectileGun : MonoBehaviour
     private void OnRelease(Bullet bullet)
     {
         bullet.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy(Bullet bullet)
+    {
+        Destroy(bullet.gameObject);
     }
 
     private void ResetShot()
