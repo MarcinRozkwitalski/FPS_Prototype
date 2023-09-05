@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -20,7 +21,8 @@ public class Bullet : MonoBehaviour
         bulletPool = pool;
     }
 
-    public string mWeaponType;
+    public MaterialType.Name[] m_AttackableMaterialType;
+    public RangedWeaponType.Name m_WeaponType;
     public int damage = 0;
 
     void OnCollisionEnter(Collision collision)
@@ -30,28 +32,21 @@ public class Bullet : MonoBehaviour
 
         bulletPool.Release(this);
 
-        if (hitObject.CompareTag("Destroyable"))
+        if (hitObject.CompareTag("Destroyable") && 
+            hitObject.GetComponent<MaterialType>() != null)
         {
-            if (hitObject.GetComponent<Material>() != null)
-            {
-                Material hitObjectMaterial = hitObject.GetComponent<Material>();
-                Health hitObjectHealth = hitObject.GetComponent<Health>();
+            MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
+            Health hitObjectHealth = hitObject.GetComponent<Health>();
 
-                if (mWeaponType == "Pistol" && hitObjectMaterial.materialType == Material.Type.Metal || mWeaponType == "Pistol" && hitObjectMaterial.materialType == Material.Type.Glass)
+            if (m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name))
+            {
+                hitObjectHealth.ReceiveDamage(damage);
+
+                if (m_WeaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
+                    hitObjectMaterialType.t_Name.Equals(MaterialType.Name.Metal) && 
+                    m_BulletImpactSoundObjectPrefab != null)
                 {
-                    hitObjectHealth.ReceiveDamage(damage);
-                    if (hitObjectMaterial.materialType == Material.Type.Metal && m_BulletImpactSoundObjectPrefab != null)
-                    {
-                        Instantiate(m_BulletImpactSoundObjectPrefab, lastBulletPosition, Quaternion.identity);
-                    }
-                }
-                else if (mWeaponType == "Laser_Gun" && hitObjectMaterial.materialType == Material.Type.Metal || mWeaponType == "Laser_Gun" && hitObjectMaterial.materialType == Material.Type.Wood)
-                {
-                    hitObjectHealth.ReceiveDamage(damage);
-                }
-                else if (mWeaponType == "Sledge_Hammer" && hitObjectMaterial.materialType == Material.Type.Wood || mWeaponType == "Sledge_Hammer" && hitObjectMaterial.materialType == Material.Type.Glass)
-                {
-                    hitObjectHealth.ReceiveDamage(damage);
+                    Instantiate(m_BulletImpactSoundObjectPrefab, lastBulletPosition, Quaternion.identity);
                 }
             }
         }

@@ -9,11 +9,13 @@ public class ProjectileGun : MonoBehaviour
     [SerializeField] Bullet bulletPrefab;
     private IObjectPool<Bullet> bulletPool;
 
-    public float shootForce, upwardForce;
+    public MaterialType.Name[] m_AttackableMaterialType;
+    public RangedWeaponType.Name m_WeaponType;
 
-    public float timeBetweenShooting, spread, reloadTime, timeBetweenShots;
+    public float shootForce;
+
+    public float timeBetweenShooting, reloadTime, timeBetweenShots;
     public int bulletDamage, magazineSize, bulletsPerTap;
-    public bool allowButtonHold;
 
     int bulletsLeft, bulletsShot;
 
@@ -22,7 +24,6 @@ public class ProjectileGun : MonoBehaviour
     public Camera FPSCamera;
     public Transform attackPoint;
 
-    public GameObject muzzleFlash;
     public TextMeshProUGUI ammunitionDisplay;
 
     public bool allowInvoke = true;
@@ -30,7 +31,6 @@ public class ProjectileGun : MonoBehaviour
     private AudioSource m_AudioSrc;
     private WeaponSoundManager m_WeaponSoundManager;
     private WeaponParticleManager m_WeaponParticleManager;
-
 
     private void Awake()
     {
@@ -43,7 +43,8 @@ public class ProjectileGun : MonoBehaviour
             );
 
         bulletsLeft = magazineSize;
-        readyToShoot = true;
+        
+        
 
         if (gameObject.GetComponent<AudioSource>() != null)
             m_AudioSrc = gameObject.GetComponent<AudioSource>();
@@ -53,6 +54,12 @@ public class ProjectileGun : MonoBehaviour
         
         if (gameObject.GetComponent<WeaponParticleManager>() != null)
             m_WeaponParticleManager = gameObject.GetComponent<WeaponParticleManager>();
+    }
+
+    private void OnEnable() 
+    {
+        readyToShoot = false;
+        StartCoroutine(DelayedUsage(0.6f));
     }
 
     private void Update()
@@ -65,8 +72,7 @@ public class ProjectileGun : MonoBehaviour
 
     private void MyInput()
     {
-        if (allowButtonHold) shooting = Input.GetKey(KeyCode.Mouse0);
-        else shooting = Input.GetKeyDown(KeyCode.Mouse0);
+        shooting = Input.GetKeyDown(KeyCode.Mouse0);
 
         if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) Reload();
         if (readyToShoot && shooting && !reloading && bulletsLeft <= 0) Reload();
@@ -105,15 +111,12 @@ public class ProjectileGun : MonoBehaviour
 
         Vector3 direction = targetPoint - attackPoint.position;
 
-        bullet.mWeaponType = gameObject.name;
+        bullet.m_AttackableMaterialType = m_AttackableMaterialType;
+        bullet.m_WeaponType = m_WeaponType;
         bullet.damage = bulletDamage;
         bullet.transform.forward = direction.normalized + new Vector3(90, 0, 0);
         
-
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
-
-        if (muzzleFlash != null)
-            Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
 
         bulletsLeft--;
         bulletsShot++;
@@ -149,6 +152,13 @@ public class ProjectileGun : MonoBehaviour
         allowInvoke = true;
     }
 
+    IEnumerator DelayedUsage(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        readyToShoot = true;
+    }
+
     private void Reload()
     {
         reloading = true;
@@ -156,9 +166,15 @@ public class ProjectileGun : MonoBehaviour
         Invoke("ReloadFinished", reloadTime);
     }
 
+    private void OnDisable()
+    {
+        CancelInvoke("ReloadFinished");
+        reloading = false;
+    }
+
     private void ReloadFinished()
     {
         bulletsLeft = magazineSize;
         reloading = false;
-    }
+    }    
 }

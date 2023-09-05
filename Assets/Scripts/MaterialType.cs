@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Material : MonoBehaviour
+public class MaterialType : MonoBehaviour
 {
     [SerializeField]
-    public enum Type
+    public enum Name
     {
         Metal,
         Wood,
         Glass
     }
 
-    public Type materialType;
+    public Name t_Name;
 }
