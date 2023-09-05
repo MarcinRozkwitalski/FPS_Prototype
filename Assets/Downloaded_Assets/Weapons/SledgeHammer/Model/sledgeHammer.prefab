@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 2300000}
   - component: {fileID: 9500000}
   - component: {fileID: 8727992464224558107}
+  - component: {fileID: 8827195326789042555}
+  - component: {fileID: 773843273515039454}
+  - component: {fileID: 2835544218260185715}
   m_Layer: 0
   m_Name: sledgeHammer
   m_TagString: Untagged
@@ -118,3 +121,55 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.10282366, y: 0.18455432, z: 0.10066606}
   m_Center: {x: 0.38140705, y: 0.0000003902028, z: -0.00000009358319}
+--- !u!136 &8827195326789042555
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.03
+  m_Height: 0.2
+  m_Direction: 0
+  m_Center: {x: 0.22, y: 0.000002238056, z: 0.000000031444642}
+--- !u!114 &773843273515039454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab4136ed75fb1448a11996d1a464ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialTypeDamage:
+  - m_AttackableMaterialType: 0100000002000000
+    m_BulletDamage: 50
+  - m_AttackableMaterialType: 00000000
+    m_BulletDamage: 75
+  m_BoxCollider: {fileID: 0}
+  m_WeaponAnimator: {fileID: 9500000}
+  anim_Attack: {fileID: 7400000, guid: 424f247d23591f841b32311720e6fb7b, type: 2}
+  timeBetweenAttacks: 0
+  ammunitionDisplay: {fileID: 0}
+--- !u!54 &2835544218260185715
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

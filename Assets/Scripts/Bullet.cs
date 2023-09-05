@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
+using static ProjectileGun;
 
 public class Bullet : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Bullet : MonoBehaviour
 
     [SerializeField]
     private GameObject m_BulletImpactSoundObjectPrefab;
+
+    [SerializeField]
+    public List<MaterialTypeDamage> materialTypeDamage = new List<MaterialTypeDamage>();
 
     private void Awake()
     {
@@ -21,7 +25,7 @@ public class Bullet : MonoBehaviour
         bulletPool = pool;
     }
 
-    public MaterialType.Name[] m_AttackableMaterialType;
+    public MaterialTypeDamage m_AttackableMaterialType;
     public RangedWeaponType.Name m_WeaponType;
     public int damage = 0;
 
@@ -38,9 +42,11 @@ public class Bullet : MonoBehaviour
             MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
             Health hitObjectHealth = hitObject.GetComponent<Health>();
 
-            if (m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name))
+            if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
             {
-                hitObjectHealth.ReceiveDamage(damage);
+                var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
+
+                hitObjectHealth.ReceiveDamage(foundElement.m_BulletDamage);
 
                 if (m_WeaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
                     hitObjectMaterialType.t_Name.Equals(MaterialType.Name.Metal) && 

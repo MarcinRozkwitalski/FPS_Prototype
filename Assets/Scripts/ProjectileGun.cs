@@ -9,13 +9,28 @@ public class ProjectileGun : MonoBehaviour
     [SerializeField] Bullet bulletPrefab;
     private IObjectPool<Bullet> bulletPool;
 
-    public MaterialType.Name[] m_AttackableMaterialType;
+    [System.Serializable]
+    public class MaterialTypeDamage 
+    {
+        public MaterialType.Name[] m_AttackableMaterialType;
+        public int m_BulletDamage;
+        
+        public MaterialTypeDamage (MaterialType.Name[] attackableMaterialType, int bulletDamage)
+        {
+            m_AttackableMaterialType = attackableMaterialType;
+            m_BulletDamage = bulletDamage;
+        }
+    }
+
+    [SerializeField]
+    public List<MaterialTypeDamage> materialTypeDamage = new List<MaterialTypeDamage>();
+
     public RangedWeaponType.Name m_WeaponType;
 
     public float shootForce;
 
     public float timeBetweenShooting, reloadTime, timeBetweenShots;
-    public int bulletDamage, magazineSize, bulletsPerTap;
+    public int magazineSize, bulletsPerTap;
 
     int bulletsLeft, bulletsShot;
 
@@ -111,9 +126,8 @@ public class ProjectileGun : MonoBehaviour
 
         Vector3 direction = targetPoint - attackPoint.position;
 
-        bullet.m_AttackableMaterialType = m_AttackableMaterialType;
+        bullet.materialTypeDamage = materialTypeDamage;
         bullet.m_WeaponType = m_WeaponType;
-        bullet.damage = bulletDamage;
         bullet.transform.forward = direction.normalized + new Vector3(90, 0, 0);
         
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
