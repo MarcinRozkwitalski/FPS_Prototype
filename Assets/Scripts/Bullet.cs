@@ -25,40 +25,47 @@ public class Bullet : MonoBehaviour
         bulletPool = pool;
     }
 
+    private bool hasHit = false;
     public MaterialTypeDamage m_AttackableMaterialType;
     public RangedWeaponType.Name m_WeaponType;
     public int damage = 0;
 
+    private void OnEnable()
+    {
+        hasHit = false;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
-        // GameObject hitObject = collision.gameObject;
-
-        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-
-        Vector3 lastBulletPosition = gameObject.transform.position;
-
-        bulletPool.Release(this);
-
-        if (damageable != null)
+        if (!hasHit)
         {
-            GameObject hitObject = collision.gameObject;
+            hasHit = true;
 
-            MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
-            HealthObject hitObjectHealth = hitObject.GetComponent<HealthObject>();
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
 
-            if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
+            Vector3 lastBulletPosition = gameObject.transform.position;
+
+            bulletPool.Release(this);
+
+            if (damageable != null)
             {
-                var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
+                GameObject hitObject = collision.gameObject;
 
-                damageable.TakeDamage(foundElement.m_BulletDamage);
-                
-                //hitObjectHealth.ReceiveDamage(foundElement.m_BulletDamage);
+                MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
+                HealthObject hitObjectHealth = hitObject.GetComponent<HealthObject>();
 
-                if (m_WeaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
-                    hitObjectMaterialType.t_Name.Equals(MaterialType.Name.Metal) && 
-                    m_BulletImpactSoundObjectPrefab != null)
+                if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
                 {
-                    Instantiate(m_BulletImpactSoundObjectPrefab, lastBulletPosition, Quaternion.identity);
+                    var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
+
+                    damageable.TakeDamage(foundElement.m_BulletDamage);
+
+                    if (m_WeaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
+                        hitObjectMaterialType.t_Name.Equals(MaterialType.Name.Metal) && 
+                        m_BulletImpactSoundObjectPrefab != null)
+                    {
+                        Instantiate(m_BulletImpactSoundObjectPrefab, lastBulletPosition, Quaternion.identity);
+                    }
                 }
             }
         }

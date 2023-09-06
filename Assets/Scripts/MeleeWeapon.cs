@@ -33,7 +33,7 @@ public class MeleeWeapon : MonoBehaviour
 
     public float timeBetweenAttacks;
 
-    bool attacking, readyToAttack;
+    bool attacking, readyToAttack, hasAttacked = false;
 
     public TextMeshProUGUI ammunitionDisplay;
 
@@ -95,32 +95,37 @@ public class MeleeWeapon : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-
-        m_BoxCollider.enabled = false;
-        m_CapsuleCollider.enabled = false;
-
-        if (damageable != null)
+        if (!hasAttacked)
         {
-            GameObject hitObject = collision.gameObject;
+            hasAttacked = true;
+            
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
 
-            MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
-            HealthObject hitObjectHealth = hitObject.GetComponent<HealthObject>();
+            m_BoxCollider.enabled = false;
+            m_CapsuleCollider.enabled = false;
 
-            if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
+            if (damageable != null)
             {
-                var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
-                
-                damageable.TakeDamage(foundElement.m_BulletDamage);
-                
-                if (hitObjectHealth.m_HealthPoints > 0)
-                    StartCoroutine(StopOnHit());
-                else
-                    Instantiate(m_SledgeHammerImpactSoundObjectPrefab, m_BoxCollider.transform.position, Quaternion.identity);
+                GameObject hitObject = collision.gameObject;
+
+                MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
+                HealthObject hitObjectHealth = hitObject.GetComponent<HealthObject>();
+
+                if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
+                {
+                    var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
+                    
+                    damageable.TakeDamage(foundElement.m_BulletDamage);
+                    
+                    if (hitObjectHealth.m_HealthPoints > 0)
+                        StartCoroutine(StopOnHit());
+                    else
+                        Instantiate(m_SledgeHammerImpactSoundObjectPrefab, m_BoxCollider.transform.position, Quaternion.identity);
+                }
             }
+            else
+                StartCoroutine(StopOnHit());
         }
-        else
-            StartCoroutine(StopOnHit());
     }
 
     IEnumerator DelayedUsage(float seconds)
@@ -128,6 +133,7 @@ public class MeleeWeapon : MonoBehaviour
         yield return new WaitForSeconds(seconds);
 
         readyToAttack = true;
+        hasAttacked = false;
     }
 
     IEnumerator DelayedColliderOn(float seconds)
