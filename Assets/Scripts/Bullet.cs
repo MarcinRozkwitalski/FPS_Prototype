@@ -31,22 +31,28 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        GameObject hitObject = collision.gameObject;
+        // GameObject hitObject = collision.gameObject;
+
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+
         Vector3 lastBulletPosition = gameObject.transform.position;
 
         bulletPool.Release(this);
 
-        if (hitObject.CompareTag("Destroyable") && 
-            hitObject.GetComponent<MaterialType>() != null)
+        if (damageable != null)
         {
+            GameObject hitObject = collision.gameObject;
+
             MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
-            Health hitObjectHealth = hitObject.GetComponent<Health>();
+            HealthObject hitObjectHealth = hitObject.GetComponent<HealthObject>();
 
             if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
             {
                 var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
 
-                hitObjectHealth.ReceiveDamage(foundElement.m_BulletDamage);
+                damageable.TakeDamage(foundElement.m_BulletDamage);
+                
+                //hitObjectHealth.ReceiveDamage(foundElement.m_BulletDamage);
 
                 if (m_WeaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
                     hitObjectMaterialType.t_Name.Equals(MaterialType.Name.Metal) && 

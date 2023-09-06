@@ -32,7 +32,7 @@ public class ProjectileGun : MonoBehaviour
     public float timeBetweenShooting, reloadTime, timeBetweenShots;
     public int magazineSize, bulletsPerTap;
 
-    int bulletsLeft, bulletsShot;
+    int bulletsLeft;
 
     bool shooting, readyToShoot, reloading;
 
@@ -58,8 +58,6 @@ public class ProjectileGun : MonoBehaviour
             );
 
         bulletsLeft = magazineSize;
-        
-        
 
         if (gameObject.GetComponent<AudioSource>() != null)
             m_AudioSrc = gameObject.GetComponent<AudioSource>();
@@ -89,15 +87,14 @@ public class ProjectileGun : MonoBehaviour
     {
         shooting = Input.GetKeyDown(KeyCode.Mouse0);
 
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) Reload();
-        if (readyToShoot && shooting && !reloading && bulletsLeft <= 0) Reload();
+        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) 
+            Reload();
+
+        if (readyToShoot && shooting && !reloading && bulletsLeft <= 0) 
+            Reload();
 
         if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
-        {
-            bulletsShot = 0;
-
             bulletPool.Get();
-        }
     }
 
     private Bullet CreateBullet()
@@ -133,7 +130,6 @@ public class ProjectileGun : MonoBehaviour
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
 
         bulletsLeft--;
-        bulletsShot++;
 
         if (allowInvoke)
         {

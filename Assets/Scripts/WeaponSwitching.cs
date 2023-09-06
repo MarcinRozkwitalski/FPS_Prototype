@@ -17,9 +17,7 @@ public class WeaponSwitching : MonoBehaviour
         foreach (var weapon in m_WeaponList)
         {
             if (weapon.gameObject != m_WeaponList[weaponID])
-            {
                 weapon.gameObject.SetActive(false);
-            }
         }
         
         m_WeaponList[weaponID].gameObject.SetActive(true);

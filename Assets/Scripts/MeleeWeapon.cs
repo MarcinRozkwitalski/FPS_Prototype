@@ -62,9 +62,7 @@ public class MeleeWeapon : MonoBehaviour
         attacking = Input.GetKeyDown(KeyCode.Mouse0);
 
         if (attacking && readyToAttack)
-        {
             Attack();
-        }
     }
 
     private void Attack()
@@ -97,31 +95,32 @@ public class MeleeWeapon : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        GameObject hitObject = collision.gameObject;
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
 
         m_BoxCollider.enabled = false;
         m_CapsuleCollider.enabled = false;
 
-        if (hitObject.CompareTag("Destroyable") && 
-            hitObject.GetComponent<MaterialType>() != null)
+        if (damageable != null)
         {
+            GameObject hitObject = collision.gameObject;
+
             MaterialType hitObjectMaterialType = hitObject.GetComponent<MaterialType>();
-            Health hitObjectHealth = hitObject.GetComponent<Health>();
+            HealthObject hitObjectHealth = hitObject.GetComponent<HealthObject>();
 
             if (materialTypeDamage.Any(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name)))
             {
                 var foundElement = materialTypeDamage.FirstOrDefault(f => f.m_AttackableMaterialType.Contains(hitObjectMaterialType.t_Name));
-
-                hitObjectHealth.ReceiveDamage(foundElement.m_BulletDamage);
-
+                
+                damageable.TakeDamage(foundElement.m_BulletDamage);
+                
                 if (hitObjectHealth.m_HealthPoints > 0)
-                StartCoroutine(StopOnHit());
+                    StartCoroutine(StopOnHit());
                 else
-                Instantiate(m_SledgeHammerImpactSoundObjectPrefab, m_BoxCollider.transform.position, Quaternion.identity);
+                    Instantiate(m_SledgeHammerImpactSoundObjectPrefab, m_BoxCollider.transform.position, Quaternion.identity);
             }
         }
         else
-        StartCoroutine(StopOnHit());
+            StartCoroutine(StopOnHit());
     }
 
     IEnumerator DelayedUsage(float seconds)
