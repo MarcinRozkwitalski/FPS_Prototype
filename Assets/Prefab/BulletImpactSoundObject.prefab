@@ -48,7 +48,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: debcd03be0ee73646bac13e95b3b59f4, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.15
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_AudioSrc: {fileID: 2290838236442827769}
   m_BulletImpactSoundSrc: {fileID: 8300000, guid: debcd03be0ee73646bac13e95b3b59f4, type: 3}
   pitchChangeMultiplier: 0.25
-  volumeChangeMultiplier: 0.1
+  volumeChangeMultiplier: 0.4
 --- !u!198 &5478567908908353047
 ParticleSystem:
   m_ObjectHideFlags: 0

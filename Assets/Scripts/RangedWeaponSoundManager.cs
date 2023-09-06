@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
-public class WeaponSoundManager : MonoBehaviour
+public class RangedWeaponSoundManager : MonoBehaviour
 {
     public AudioSource m_AudioSrc;
     public AudioClip m_WeaponShotSrc;
@@ -13,7 +13,7 @@ public class WeaponSoundManager : MonoBehaviour
     public float pitchChangeMultiplier = 0.15f;
 
     [Range(0.01f, 1f)]
-    public float volumeChangeMultiplier = 0.1f;
+    public float volumeChangeMultiplier = 0.4f;
 
     private void Awake()
     {

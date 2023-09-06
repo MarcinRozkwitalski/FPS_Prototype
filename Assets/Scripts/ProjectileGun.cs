@@ -44,7 +44,7 @@ public class ProjectileGun : MonoBehaviour
     public bool allowInvoke = true;
 
     private AudioSource m_AudioSrc;
-    private WeaponSoundManager m_WeaponSoundManager;
+    private RangedWeaponSoundManager m_RangedWeaponSoundManager;
     private WeaponParticleManager m_WeaponParticleManager;
 
     private void Awake()
@@ -62,8 +62,8 @@ public class ProjectileGun : MonoBehaviour
         if (gameObject.GetComponent<AudioSource>() != null)
             m_AudioSrc = gameObject.GetComponent<AudioSource>();
         
-        if (gameObject.GetComponent<WeaponSoundManager>() != null)
-            m_WeaponSoundManager = gameObject.GetComponent<WeaponSoundManager>();
+        if (gameObject.GetComponent<RangedWeaponSoundManager>() != null)
+            m_RangedWeaponSoundManager = gameObject.GetComponent<RangedWeaponSoundManager>();
         
         if (gameObject.GetComponent<WeaponParticleManager>() != null)
             m_WeaponParticleManager = gameObject.GetComponent<WeaponParticleManager>();
@@ -109,7 +109,7 @@ public class ProjectileGun : MonoBehaviour
 
     private void AddVelocityAndDirection(Bullet bullet)
     {
-        m_WeaponSoundManager.PlayShotSound();
+        m_RangedWeaponSoundManager.PlayShotSound();
         m_WeaponParticleManager.PlayParticle();
 
         Ray ray = FPSCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -124,7 +124,7 @@ public class ProjectileGun : MonoBehaviour
         Vector3 direction = targetPoint - attackPoint.position;
 
         bullet.materialTypeDamage = materialTypeDamage;
-        bullet.m_WeaponType = m_WeaponType;
+        bullet.weaponType = m_WeaponType;
         bullet.transform.forward = direction.normalized + new Vector3(90, 0, 0);
         
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
@@ -172,7 +172,7 @@ public class ProjectileGun : MonoBehaviour
     private void Reload()
     {
         reloading = true;
-        m_WeaponSoundManager.PlayReloadSound();
+        m_RangedWeaponSoundManager.PlayReloadSound();
         Invoke("ReloadFinished", reloadTime);
     }
 

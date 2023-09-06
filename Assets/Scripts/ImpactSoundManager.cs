@@ -14,7 +14,7 @@ public class ImpactSoundManager : MonoBehaviour
     public float pitchChangeMultiplier = 0.25f;
 
     [Range(0.01f, 1f)]
-    public float volumeChangeMultiplier = 0.08f;
+    public float volumeChangeMultiplier = 0.4f;
 
     private void Awake()
     {

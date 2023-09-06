@@ -40,9 +40,4 @@ public class PlayerControls : MonoBehaviour
             m_WeaponSwitching.EnableWeapon(2);
         };
     }
-
-    private void Start()
-    {
-        // isEquippingWeapon = 
-    }
 }

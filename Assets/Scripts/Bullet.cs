@@ -7,7 +7,7 @@ using static ProjectileGun;
 
 public class Bullet : MonoBehaviour
 {
-    private IObjectPool<Bullet> bulletPool;
+    private IObjectPool<Bullet> m_BulletPool;
 
     [SerializeField]
     private GameObject m_BulletImpactSoundObjectPrefab;
@@ -22,30 +22,30 @@ public class Bullet : MonoBehaviour
 
     public void SetPool(IObjectPool<Bullet> pool)
     {
-        bulletPool = pool;
+        m_BulletPool = pool;
     }
 
-    private bool hasHit = false;
-    public MaterialTypeDamage m_AttackableMaterialType;
-    public RangedWeaponType.Name m_WeaponType;
+    bool m_HasHit = false;
+    public MaterialTypeDamage attackableMaterialType;
+    public RangedWeaponType.Name weaponType;
     public int damage = 0;
 
     private void OnEnable()
     {
-        hasHit = false;
+        m_HasHit = false;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!hasHit)
+        if (!m_HasHit)
         {
-            hasHit = true;
+            m_HasHit = true;
 
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
 
             Vector3 lastBulletPosition = gameObject.transform.position;
 
-            bulletPool.Release(this);
+            m_BulletPool.Release(this);
 
             if (damageable != null)
             {
@@ -60,7 +60,7 @@ public class Bullet : MonoBehaviour
 
                     damageable.TakeDamage(foundElement.m_BulletDamage);
 
-                    if (m_WeaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
+                    if (weaponType.Equals(RangedWeaponType.Name.NormalBullet) && 
                         hitObjectMaterialType.t_Name.Equals(MaterialType.Name.Metal) && 
                         m_BulletImpactSoundObjectPrefab != null)
                     {
