@@ -8,6 +8,8 @@ public class RangedWeaponSoundManager : MonoBehaviour
     public AudioSource m_AudioSrc;
     public AudioClip m_WeaponShotSrc;
     public AudioClip m_WeaponReloadSrc;
+    public AudioClip m_Additional01Src;
+    public AudioClip m_Additional02Src;
 
     [Range(0.05f, 0.20f)]
     public float pitchChangeMultiplier = 0.15f;
@@ -30,6 +32,20 @@ public class RangedWeaponSoundManager : MonoBehaviour
     public void PlayReloadSound()
     {
         m_AudioSrc.clip = m_WeaponReloadSrc;
+        m_AudioSrc.pitch = Random.Range(1 - pitchChangeMultiplier, 1 + pitchChangeMultiplier);
+        m_AudioSrc.PlayOneShot(m_AudioSrc.clip, volumeChangeMultiplier);
+    }
+
+    public void PlayAdditional01Sound()
+    {
+        m_AudioSrc.clip = m_Additional01Src;
+        m_AudioSrc.pitch = Random.Range(1 - pitchChangeMultiplier, 1 + pitchChangeMultiplier);
+        m_AudioSrc.PlayOneShot(m_AudioSrc.clip, volumeChangeMultiplier);
+    }
+
+    public void PlayAdditional02Sound()
+    {
+        m_AudioSrc.clip = m_Additional02Src;
         m_AudioSrc.pitch = Random.Range(1 - pitchChangeMultiplier, 1 + pitchChangeMultiplier);
         m_AudioSrc.PlayOneShot(m_AudioSrc.clip, volumeChangeMultiplier);
     }

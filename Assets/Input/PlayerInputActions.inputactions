@@ -6,6 +6,15 @@
             "id": "3830f5bc-1911-4325-aca5-532b9f062216",
             "actions": [
                 {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "4784ddb2-6554-4020-8f83-22efd23025e9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "EquipWeapon01",
                     "type": "Button",
                     "id": "9a141f77-462b-4767-9249-8e132bba3796",
@@ -36,23 +45,23 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "c1cab25a-94d9-40b1-a596-c8bdf47e231e",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard & Mouse",
-                    "action": "EquipWeapon01",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "cf8b6b49-dcdb-4bb9-8cdd-d0b590251312",
                     "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
                     "action": "EquipWeapon03",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1cab25a-94d9-40b1-a596-c8bdf47e231e",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "EquipWeapon01",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -66,6 +75,72 @@
                     "action": "EquipWeapon02",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "567e908b-da12-4490-85a7-9a14765fc551",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "81533c3c-70f0-4581-8c94-c929670ee22e",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Up",
+                    "id": "07ea0dff-f2ec-4e54-ab1f-9767bd7e33f0",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Down",
+                    "id": "451c5021-29e1-446b-8ef5-5400a5c40646",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Left",
+                    "id": "30423dc3-44b4-4c78-8e4f-3b20198e74ca",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "47160a42-a34f-4792-9171-901319a65bf9",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

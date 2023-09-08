@@ -32,7 +32,7 @@ public class ProjectileGun : MonoBehaviour
     public float timeBetweenShooting, reloadTime, timeBetweenShots;
     public int magazineSize, bulletsPerTap;
 
-    int bulletsLeft;
+    public int bulletsLeft;
 
     bool shooting, readyToShoot, reloading;
 
@@ -43,9 +43,10 @@ public class ProjectileGun : MonoBehaviour
 
     public bool allowInvoke = true;
 
-    private AudioSource m_AudioSrc;
     private RangedWeaponSoundManager m_RangedWeaponSoundManager;
     private WeaponParticleManager m_WeaponParticleManager;
+
+    IWeaponEffects weaponEffects;
 
     private void Awake()
     {
@@ -58,15 +59,17 @@ public class ProjectileGun : MonoBehaviour
             );
 
         bulletsLeft = magazineSize;
-
-        if (gameObject.GetComponent<AudioSource>() != null)
-            m_AudioSrc = gameObject.GetComponent<AudioSource>();
         
         if (gameObject.GetComponent<RangedWeaponSoundManager>() != null)
             m_RangedWeaponSoundManager = gameObject.GetComponent<RangedWeaponSoundManager>();
         
         if (gameObject.GetComponent<WeaponParticleManager>() != null)
             m_WeaponParticleManager = gameObject.GetComponent<WeaponParticleManager>();
+    }
+
+    private void Start()
+    {
+        weaponEffects = GetComponent<IWeaponEffects>();
     }
 
     private void OnEnable() 
@@ -109,8 +112,10 @@ public class ProjectileGun : MonoBehaviour
 
     private void AddVelocityAndDirection(Bullet bullet)
     {
-        m_RangedWeaponSoundManager.PlayShotSound();
-        m_WeaponParticleManager.PlayParticle();
+        if (weaponEffects != null)
+            weaponEffects.PlayShootEffect();
+        else
+            Debug.LogError("Script " + weaponEffects + " not found!");
 
         Ray ray = FPSCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
@@ -172,7 +177,12 @@ public class ProjectileGun : MonoBehaviour
     private void Reload()
     {
         reloading = true;
-        m_RangedWeaponSoundManager.PlayReloadSound();
+
+        if (weaponEffects != null)
+            weaponEffects.PlayReloadEffect();
+        else
+            Debug.LogError("Script " + weaponEffects + " not found!");
+
         Invoke("ReloadFinished", reloadTime);
     }
 

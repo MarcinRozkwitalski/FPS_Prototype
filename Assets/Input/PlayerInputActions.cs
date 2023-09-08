@@ -28,6 +28,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ""id"": ""3830f5bc-1911-4325-aca5-532b9f062216"",
             ""actions"": [
                 {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""4784ddb2-6554-4020-8f83-22efd23025e9"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""EquipWeapon01"",
                     ""type"": ""Button"",
                     ""id"": ""9a141f77-462b-4767-9249-8e132bba3796"",
@@ -58,23 +67,23 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""c1cab25a-94d9-40b1-a596-c8bdf47e231e"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
-                    ""action"": ""EquipWeapon01"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""cf8b6b49-dcdb-4bb9-8cdd-d0b590251312"",
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""EquipWeapon03"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1cab25a-94d9-40b1-a596-c8bdf47e231e"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""EquipWeapon01"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -88,6 +97,72 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""EquipWeapon02"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""567e908b-da12-4490-85a7-9a14765fc551"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""81533c3c-70f0-4581-8c94-c929670ee22e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""07ea0dff-f2ec-4e54-ab1f-9767bd7e33f0"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""451c5021-29e1-446b-8ef5-5400a5c40646"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""30423dc3-44b4-4c78-8e4f-3b20198e74ca"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""47160a42-a34f-4792-9171-901319a65bf9"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -113,6 +188,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_EquipWeapon01 = m_Player.FindAction("EquipWeapon01", throwIfNotFound: true);
         m_Player_EquipWeapon02 = m_Player.FindAction("EquipWeapon02", throwIfNotFound: true);
         m_Player_EquipWeapon03 = m_Player.FindAction("EquipWeapon03", throwIfNotFound: true);
@@ -175,6 +251,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
+    private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_EquipWeapon01;
     private readonly InputAction m_Player_EquipWeapon02;
     private readonly InputAction m_Player_EquipWeapon03;
@@ -182,6 +259,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @EquipWeapon01 => m_Wrapper.m_Player_EquipWeapon01;
         public InputAction @EquipWeapon02 => m_Wrapper.m_Player_EquipWeapon02;
         public InputAction @EquipWeapon03 => m_Wrapper.m_Player_EquipWeapon03;
@@ -194,6 +272,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
+                @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @EquipWeapon01.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquipWeapon01;
                 @EquipWeapon01.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquipWeapon01;
                 @EquipWeapon01.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquipWeapon01;
@@ -207,6 +288,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
                 @EquipWeapon01.started += instance.OnEquipWeapon01;
                 @EquipWeapon01.performed += instance.OnEquipWeapon01;
                 @EquipWeapon01.canceled += instance.OnEquipWeapon01;
@@ -231,6 +315,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
+        void OnMovement(InputAction.CallbackContext context);
         void OnEquipWeapon01(InputAction.CallbackContext context);
         void OnEquipWeapon02(InputAction.CallbackContext context);
         void OnEquipWeapon03(InputAction.CallbackContext context);

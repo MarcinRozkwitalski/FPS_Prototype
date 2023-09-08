@@ -15,10 +15,10 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     public List<MaterialTypeDamage> materialTypeDamage = new List<MaterialTypeDamage>();
 
-    private void Awake()
-    {
-        this.gameObject.SetActive(true);
-    }
+    // private void Awake()
+    // {
+    //     this.gameObject.SetActive(true);
+    // }
 
     public void SetPool(IObjectPool<Bullet> pool)
     {
