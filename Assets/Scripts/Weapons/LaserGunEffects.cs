@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LaserGunEffects : MonoBehaviour, IWeaponEffects
@@ -22,7 +23,7 @@ public class LaserGunEffects : MonoBehaviour, IWeaponEffects
         StartCoroutine(DelayedParticlePlay(0.2f));
     }
 
-    public void PlayReloadEffect()
+    public void PlayReloadEffect(TextMeshProUGUI textMeshProUGUI)
     {
         m_RangedWeaponSoundManager.PlayReloadSound();
     }

@@ -10,15 +10,13 @@ public class Bullet : MonoBehaviour
     private IObjectPool<Bullet> m_BulletPool;
 
     [SerializeField]
+    private float m_LifeSpan = 4f;
+
+    [SerializeField]
     private GameObject m_BulletImpactSoundObjectPrefab;
 
     [SerializeField]
     public List<MaterialTypeDamage> materialTypeDamage = new List<MaterialTypeDamage>();
-
-    // private void Awake()
-    // {
-    //     this.gameObject.SetActive(true);
-    // }
 
     public void SetPool(IObjectPool<Bullet> pool)
     {
@@ -33,6 +31,7 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         m_HasHit = false;
+        StartCoroutine(ReleaseBulletAfterTime(m_LifeSpan));
     }
 
     void OnCollisionEnter(Collision collision)
@@ -69,5 +68,12 @@ public class Bullet : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator ReleaseBulletAfterTime(float m_LifeSpan)
+    {
+        yield return new WaitForSeconds(m_LifeSpan);
+
+        m_BulletPool.Release(this);
     }
 }

@@ -11,7 +11,7 @@ public class WeaponSwitching : MonoBehaviour
 
     public List<GameObject> projectileGunsList;
 
-    private int currentWeaponID;
+    private int currentWeaponID = 0;
     
     private void Awake() 
     {

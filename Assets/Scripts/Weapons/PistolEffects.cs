@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PistolEffects : MonoBehaviour, IWeaponEffects
@@ -7,9 +8,6 @@ public class PistolEffects : MonoBehaviour, IWeaponEffects
     Animator m_Anim;
     RangedWeaponSoundManager m_RangedWeaponSoundManager;
     ParticleSystem m_ParticleSystem;
-
-    [SerializeField]
-    GameObject m_PistolSlide;
 
     private void Awake() 
     {
@@ -25,10 +23,10 @@ public class PistolEffects : MonoBehaviour, IWeaponEffects
         StartCoroutine(DelayedParticlePlay(0.05f));
     }
 
-    public void PlayReloadEffect()
+    public void PlayReloadEffect(TextMeshProUGUI textMeshProUGUI)
     {
         m_Anim.SetTrigger("hasReloaded");
-        StartCoroutine(DelayedAdditional01SoundPlay((float)30/60));
+        StartCoroutine(DelayedAdditional01SoundPlay((float)30/60, textMeshProUGUI));
         StartCoroutine(DelayedAdditional02SoundPlay((float)128/60));
         StartCoroutine(DelayedReloadSoundPlay((float)247/60));
     }
@@ -39,11 +37,13 @@ public class PistolEffects : MonoBehaviour, IWeaponEffects
         m_ParticleSystem.Play();
     }
 
-    IEnumerator DelayedAdditional01SoundPlay(float seconds)
+    IEnumerator DelayedAdditional01SoundPlay(float seconds, TextMeshProUGUI textMeshProUGUI)
     {
         yield return new WaitForSeconds(seconds);
         m_RangedWeaponSoundManager.PlayAdditional01Sound();
-        gameObject.GetComponent<ProjectileGun>().bulletsLeft = 0;
+        ProjectileGun projectileGun = gameObject.GetComponent<ProjectileGun>();
+        projectileGun.bulletsLeft = 0;
+        textMeshProUGUI.SetText(projectileGun.bulletsLeft / projectileGun.bulletsPerTap + " / " + projectileGun.magazineSize / projectileGun.bulletsPerTap);
     }
 
     IEnumerator DelayedAdditional02SoundPlay(float seconds)

@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using TMPro;
 
-public class SledgeHammer : MonoBehaviour
+public class SledgeHammer : MonoBehaviour, IWeaponUsage
 {
     [System.Serializable]
     public class MaterialTypeDamage 
@@ -48,22 +48,21 @@ public class SledgeHammer : MonoBehaviour
     {
         readyToAttack = false;
         StartCoroutine(DelayedUsage(0.6f));
-    }
-
-    private void Update()
-    {
-        MyInput();
 
         if (ammunitionDisplay != null)
             ammunitionDisplay.SetText("");
     }
 
-    private void MyInput()
+    public void Use()
     {
-        attacking = Input.GetKeyDown(KeyCode.Mouse0);
-
+        attacking = true;
         if (attacking && readyToAttack)
             Attack();
+    }
+
+    public void Reload()
+    {
+        
     }
 
     private void Attack()

@@ -37,6 +37,42 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Value"",
+                    ""id"": ""2dded8d0-5914-4334-ace4-d02608c63be2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Value"",
+                    ""id"": ""f1bb0bff-c54c-4264-8995-85ba5e59813c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""UseWeapon"",
+                    ""type"": ""Value"",
+                    ""id"": ""878dfdb6-a95b-470d-9f20-c3278ea59ce9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ReloadWeapon"",
+                    ""type"": ""Value"",
+                    ""id"": ""3e739f30-3d99-4dd2-a0ac-7bebb891b399"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""EquipWeapon01"",
                     ""type"": ""Button"",
                     ""id"": ""9a141f77-462b-4767-9249-8e132bba3796"",
@@ -163,6 +199,50 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4d50ccd-a253-449b-b07a-aaf557515615"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdb68920-df96-4027-b3d6-4570773c49ab"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""UseWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""195632d3-812d-42af-a2ff-cd584d655910"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d1367d8-707f-4cf3-bfdd-d30f87a1952a"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""ReloadWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -189,6 +269,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_UseWeapon = m_Player.FindAction("UseWeapon", throwIfNotFound: true);
+        m_Player_ReloadWeapon = m_Player.FindAction("ReloadWeapon", throwIfNotFound: true);
         m_Player_EquipWeapon01 = m_Player.FindAction("EquipWeapon01", throwIfNotFound: true);
         m_Player_EquipWeapon02 = m_Player.FindAction("EquipWeapon02", throwIfNotFound: true);
         m_Player_EquipWeapon03 = m_Player.FindAction("EquipWeapon03", throwIfNotFound: true);
@@ -252,6 +336,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_UseWeapon;
+    private readonly InputAction m_Player_ReloadWeapon;
     private readonly InputAction m_Player_EquipWeapon01;
     private readonly InputAction m_Player_EquipWeapon02;
     private readonly InputAction m_Player_EquipWeapon03;
@@ -260,6 +348,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @UseWeapon => m_Wrapper.m_Player_UseWeapon;
+        public InputAction @ReloadWeapon => m_Wrapper.m_Player_ReloadWeapon;
         public InputAction @EquipWeapon01 => m_Wrapper.m_Player_EquipWeapon01;
         public InputAction @EquipWeapon02 => m_Wrapper.m_Player_EquipWeapon02;
         public InputAction @EquipWeapon03 => m_Wrapper.m_Player_EquipWeapon03;
@@ -275,6 +367,18 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @UseWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWeapon;
+                @UseWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWeapon;
+                @UseWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseWeapon;
+                @ReloadWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReloadWeapon;
+                @ReloadWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReloadWeapon;
+                @ReloadWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReloadWeapon;
                 @EquipWeapon01.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquipWeapon01;
                 @EquipWeapon01.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquipWeapon01;
                 @EquipWeapon01.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquipWeapon01;
@@ -291,6 +395,18 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @UseWeapon.started += instance.OnUseWeapon;
+                @UseWeapon.performed += instance.OnUseWeapon;
+                @UseWeapon.canceled += instance.OnUseWeapon;
+                @ReloadWeapon.started += instance.OnReloadWeapon;
+                @ReloadWeapon.performed += instance.OnReloadWeapon;
+                @ReloadWeapon.canceled += instance.OnReloadWeapon;
                 @EquipWeapon01.started += instance.OnEquipWeapon01;
                 @EquipWeapon01.performed += instance.OnEquipWeapon01;
                 @EquipWeapon01.canceled += instance.OnEquipWeapon01;
@@ -316,6 +432,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnUseWeapon(InputAction.CallbackContext context);
+        void OnReloadWeapon(InputAction.CallbackContext context);
         void OnEquipWeapon01(InputAction.CallbackContext context);
         void OnEquipWeapon02(InputAction.CallbackContext context);
         void OnEquipWeapon03(InputAction.CallbackContext context);

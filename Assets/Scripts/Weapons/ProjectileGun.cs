@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ProjectileGun : MonoBehaviour
+public class ProjectileGun : MonoBehaviour, IWeaponUsage
 {
     [SerializeField] Bullet bulletPrefab;
     private IObjectPool<Bullet> bulletPool;
@@ -74,30 +74,11 @@ public class ProjectileGun : MonoBehaviour
 
     private void OnEnable() 
     {
-        readyToShoot = false;
-        StartCoroutine(DelayedUsage(0.6f));
-    }
-
-    private void Update()
-    {
-        MyInput();
-
         if (ammunitionDisplay != null)
             ammunitionDisplay.SetText(bulletsLeft / bulletsPerTap + " / " + magazineSize / bulletsPerTap);
-    }
 
-    private void MyInput()
-    {
-        shooting = Input.GetKeyDown(KeyCode.Mouse0);
-
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) 
-            Reload();
-
-        if (readyToShoot && shooting && !reloading && bulletsLeft <= 0) 
-            Reload();
-
-        if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
-            bulletPool.Get();
+        readyToShoot = false;
+        StartCoroutine(DelayedUsage(0.6f));
     }
 
     private Bullet CreateBullet()
@@ -108,6 +89,35 @@ public class ProjectileGun : MonoBehaviour
         readyToShoot = false;
 
         return bullet;
+    }
+    
+    public void Use()
+    {
+        shooting = true;
+
+        if (readyToShoot && shooting && !reloading && bulletsLeft <= 0)
+            Reload();
+
+        if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
+            bulletPool.Get();
+
+        if (ammunitionDisplay != null)
+            ammunitionDisplay.SetText(bulletsLeft / bulletsPerTap + " / " + magazineSize / bulletsPerTap);
+    }
+
+    public void Reload()
+    {
+        if (bulletsLeft < magazineSize && !reloading)
+        {
+            reloading = true;
+
+            if (weaponEffects != null)
+                weaponEffects.PlayReloadEffect(ammunitionDisplay);
+            else
+                Debug.LogError("Script " + weaponEffects + " not found!");
+
+            Invoke("ReloadFinished", reloadTime);
+        }
     }
 
     private void AddVelocityAndDirection(Bullet bullet)
@@ -130,7 +140,10 @@ public class ProjectileGun : MonoBehaviour
 
         bullet.materialTypeDamage = materialTypeDamage;
         bullet.weaponType = m_WeaponType;
-        bullet.transform.forward = direction.normalized + new Vector3(90, 0, 0);
+
+        Quaternion rotation = Quaternion.LookRotation(direction.normalized);
+        bullet.transform.rotation = rotation;
+        bullet.transform.rotation *= Quaternion.Euler(0, 90, 0);
         
         bullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
 
@@ -174,18 +187,6 @@ public class ProjectileGun : MonoBehaviour
         readyToShoot = true;
     }
 
-    private void Reload()
-    {
-        reloading = true;
-
-        if (weaponEffects != null)
-            weaponEffects.PlayReloadEffect();
-        else
-            Debug.LogError("Script " + weaponEffects + " not found!");
-
-        Invoke("ReloadFinished", reloadTime);
-    }
-
     private void OnDisable()
     {
         CancelInvoke("ReloadFinished");
@@ -195,6 +196,7 @@ public class ProjectileGun : MonoBehaviour
     private void ReloadFinished()
     {
         bulletsLeft = magazineSize;
+        ammunitionDisplay.SetText(bulletsLeft / bulletsPerTap + " / " + magazineSize / bulletsPerTap);
         reloading = false;
     }    
 }

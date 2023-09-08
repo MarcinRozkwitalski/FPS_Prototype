@@ -5559,7 +5559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 150869941}
   m_Layer: 10
-  m_Name: AttackPoint
+  m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5590,7 +5590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 201828027}
   m_Layer: 10
-  m_Name: AttackPoint
+  m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23734,11 +23734,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b5742c35cad19b945bc129c719875b2d, type: 3}
   m_PrefabInstance: {fileID: 1630826361}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1666616495 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9051692995052618235, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
-  m_PrefabInstance: {fileID: 647148482}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1858454704
 GameObject:
   m_ObjectHideFlags: 0
@@ -28741,7 +28736,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1859829086}
   - component: {fileID: 1859829088}
-  - component: {fileID: 1859829087}
   - component: {fileID: 1859829089}
   - component: {fileID: 1859829090}
   m_Layer: 0
@@ -28768,26 +28762,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &1859829087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859829085}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f08c4970d0cdba488ce2b09a327a1fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 963194227}
-  walkSpeed: 3
-  runSpeed: 6
-  jumpPower: 4.5
-  gravity: 10
-  lookSpeed: 2
-  lookXLimit: 70
-  canMove: 1
 --- !u!143 &1859829088
 CharacterController:
   m_ObjectHideFlags: 0
@@ -28847,22 +28821,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4784ddb2-6554-4020-8f83-22efd23025e9
     m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 31f632e2-a8ea-4d97-8033-35b67f690693
-    m_ActionName: Player/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 264a5684-a5c2-41dd-9fa3-06902bf2c2c6
-    m_ActionName: Player/Sprint[/Keyboard/leftShift]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 32686bd9-4341-42b4-a660-0518d41df6fd
-    m_ActionName: Player/UseWeapon[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e9ce2894-0b60-4119-9efe-cfc6ec07c617
-    m_ActionName: Player/ReloadWeapon[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard & Mouse
   m_DefaultActionMap: Player
@@ -28889,6 +28847,9 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   canMove: 1
+  runPressed: 0
+  spacebarPressed: 0
+  leftMousePressed: 0
   weaponAnimatorList: []
 --- !u!1001 &1868760372
 PrefabInstance:
@@ -28907,7 +28868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: a0042214ad91bb442ac62e8066ff05a2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a0042214ad91bb442ac62e8066ff05a2, type: 3}
       propertyPath: m_RootOrder
@@ -44626,7 +44587,7 @@ MonoBehaviour:
   materialTypeDamage:
   - m_AttackableMaterialType: 0000000001000000
     m_BulletDamage: 100
-  m_WeaponType: 1
+  m_WeaponType: 0
   shootForce: 20
   timeBetweenShooting: 1.3
   reloadTime: 3
@@ -44698,7 +44659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b508bccd9f8cf5942bce0d2c67a9588c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PistolSlide: {fileID: 1666616495}
 --- !u!111 &3506690171425351940
 Animation:
   m_ObjectHideFlags: 0
